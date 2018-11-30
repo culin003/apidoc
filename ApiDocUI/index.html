@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>ApiDoc Demo</title>
+    <link rel="stylesheet" type="text/css" href="./css/zTreeStyle.css">
+    <link rel="stylesheet" href="./css/themes/default/easyui.css">
+    <link rel="stylesheet" href="./css/themes/icon.css">
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="./js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="./data/data.js"></script>
+    <script type="text/javascript">
+        var ztree;
+        var setting = {
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback: {
+                onClick: function (e, treeId, treeNode) {
+                    $("[xtype='field']").each(function (index, node) {
+                        var jNode = $(node);
+                        var field = treeNode[jNode.attr("name")];
+                        var fieldValue = "";
+                        if (field) {
+                            if ("params" == jNode.attr("name") || "body" == jNode.attr("name")) {
+                                fieldValue = JSON.stringify(field, null, 4)
+                            } else {
+                                fieldValue = field;
+                            }
+                        }
+
+                        jNode.text(fieldValue);
+                    });
+                }
+            }
+        };
+
+        $(function () {
+            ztree = $.fn.zTree.init($("#ztree"), setting, treeData);
+        });
+    </script>
+    <style type="text/css">
+        .baseInfo {
+            color: #0d5ab1;
+        }
+    </style>
+</head>
+<body class="easyui-layout">
+<div region="north" border="false" class="rtitle"
+     style="text-align:center;background-color:#336699;color:#fff;font-size:18px;padding:5px;">
+    jQuery EasyUI RSS Reader Demo
+</div>
+<div region="west" split="true" title="接口列表" border="false" style="width:230px;background:#EAFDFF;">
+    <ul id="ztree" dataName="data1" class="ztree"></ul>
+</div>
+<div region="center" border="true" title="接口信息">
+    <div class="easyui-panel" title="接口基础信息" data-options="collapsible:true">
+        <div style="margin-left: 10px;">
+            <h4>接口名称：<span xtype="field" name="name"></span></h4>
+            <h4>创建时间：<span xtype="field" name="createDate"></span></h4>
+            <h4>接口描述：<span xtype="field" name="desc"></span></h4>
+            <h4>接口协议：HTTP</h4>
+            <h4>请求方式：<span xtype="field" name="method"></span></h4>
+            <h4>加密方法：<span xtype="field" name="encrypt"></span></h4>
+            <h4>请求地址：<span xtype="field" name="callUrl"></span></h4>
+            <h4>HTTP HEAD：User-Agent:enjoy_link|APP编码|APP版本号|</h4>
+        </div>
+    </div>
+    <div class="easyui-panel" title="接口参数信息" data-options="collapsible:true">
+<pre xtype="field" name="params"></pre>
+    </div>
+    <div class="easyui-panel" title="接口响应信息" data-options="collapsible:true">
+<pre xtype="field" name="body"></pre>
+    </div>
+</div>
+</body>
+</html>
